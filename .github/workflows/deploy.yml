@@ -48,7 +48,7 @@ jobs:
           git pull origin master
           ./gradlew clean build
           systemctl restart demo-debug
-
+    # Note: Ensure the server has Git, JDK, and Gradle installed, and the application is set up to run as a service.
     # Alternative: Copy JAR and restart service
     # - name: Deploy JAR to Server
     #   uses: appleboy/scp-action@master
