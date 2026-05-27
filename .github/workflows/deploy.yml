@@ -22,23 +22,19 @@ jobs:
           cache: gradle
 
       - name: Grant execute permission for gradlew
-        run: chmod +x demo-debug/gradlew
+        run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: |
-          cd demo-debug
-          ./gradlew clean build -x test
+        run: ./gradlew clean build -x test --no-daemon
 
       - name: Run Tests
-        run: |
-          cd demo-debug
-          ./gradlew test
+        run: ./gradlew test --no-daemon
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: jar-build
-          path: demo-debug/build/libs/*.jar
+          path: build/libs/*.jar
 
       - name: Deploy to dhirajtech.in
         uses: appleboy/ssh-action@v1.0.3
@@ -48,15 +44,19 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /var/www/demo-debug
+            cd /root/demo-debug
 
             git pull origin master
 
             chmod +x gradlew
 
-            ./gradlew clean build -x test
+            export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+            export PATH=$JAVA_HOME/bin:$PATH
+
+            ./gradlew clean build -x test --no-daemon
 
             sudo systemctl restart demo-debug
+
             sudo systemctl status demo-debug
 
   notify:
