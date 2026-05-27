@@ -37,16 +37,17 @@ jobs:
 
     # Deploy to dhirajtech.in server via SSH
     - name: Deploy to dhirajtech.in
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: dhirajtech.in
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          cd /var/www/demo-debug
-          git pull origin master
-          ./gradlew clean build
+          cd /var/www/demo-debug          
+          git pull origin master          
+          chmod +x gradlew          
+          ./gradlew clean build          
           systemctl restart demo-debug
     # Note: Ensure the server has Git, JDK, and Gradle installed, and the application is set up to run as a service.
     # Alternative: Copy JAR and restart service
