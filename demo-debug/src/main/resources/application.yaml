@@ -1,5 +1,12 @@
+server:
+  port: 9091
+
 spring:
   application:
     name: demo-debug
-    server:
-      port: 9091
+  cassandra:
+    contact-points: localhost
+    port: 9042
+    keyspace-name: student_db
+    local-datacenter: datacenter1
+    schema-action: create_if_not_exists

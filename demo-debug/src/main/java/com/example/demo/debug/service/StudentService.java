@@ -1,6 +1,8 @@
 package com.example.demo.debug.service;
 
 import com.example.demo.debug.entity.Student;
+import com.example.demo.debug.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,25 +11,26 @@ import java.util.List;
 @Service
 
 public class StudentService {
-    List<Student> studentList=new ArrayList<>();;
+    @Autowired
+    private StudentRepository studentRepository;
     public Student addStudent(Student student)
     {
-        studentList.add(student);
-        return student;
+
+        return studentRepository.save(student);
     }
 
     public List<Student> getAllStudents()
     {
-        return studentList;
+        return studentRepository.findAll();
     }
-    public Student updateStudent(int id,Student student)
-    {
-        Student studentObj=studentList.stream().filter(s->s.getId()==id).findFirst().orElse(null);
-        if(studentObj!=null && studentObj.getId()>0){
-            studentObj.setFirstName(student.getFirstName());
+    public Student updateStudent(Student student) {
+        Student studentObj = studentRepository.findById(student.getId())
+                .orElseThrow(() -> new RuntimeException("Student not found"+student.getId()));
+           studentObj.setFirstName(student.getFirstName());
             studentObj.setLastName(student.getLastName());
             studentObj.setAge(student.getAge());
+            studentRepository.save(studentObj);
+            return studentObj;
         }
-        return studentObj;
-    }
+
 }

@@ -1,11 +1,14 @@
 package com.example.demo.debug.entity;
 
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
+@Table("student")
 public class Student {
+    @PrimaryKey
     private Integer id;
     private String firstName;
     private String lastName;
     private int age;
-
     public Student(Integer id, String firstName, String lastName, int age) {
         this.id = id;
         this.firstName = firstName;

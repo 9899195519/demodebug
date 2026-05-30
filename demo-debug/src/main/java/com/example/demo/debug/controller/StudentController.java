@@ -24,9 +24,9 @@ public class StudentController {
 
         return studentService.getAllStudents();
     }
-    @PutMapping("/updateStudent/{id}")
-    public Student updateStudent(@PathVariable int id, @RequestBody Student student)
+    @PutMapping("/updateStudent")
+    public Student updateStudent(@RequestBody Student student)
     {
-        return studentService.updateStudent(id,student);
+        return studentService.updateStudent(student);
     }
 }
